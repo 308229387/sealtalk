@@ -1,0 +1,2 @@
+include ':kit'
+include ':sealtalk', ':contactcard', ':recognizer', ':pushpermission'

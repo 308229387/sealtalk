@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:id="@+id/fl_content_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></FrameLayout>
+    <TextView
+        android:id="@+id/tv_empty_group_notice"
+        style="@style/TextStyle.Alignment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/seal_search_empty_text_margin_top"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:text="@string/group_list_not_group_save_to_contact"
+        android:textColor="@color/seal_search_empty_text_color"
+        android:visibility="gone"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/tv_group_size"
+        style="@style/TextStyle.Alignment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/seal_search_empty_text_color"
+        android:textSize="@dimen/seal_search_group_foot_text_size"
+        android:visibility="gone" />
+</LinearLayout>
