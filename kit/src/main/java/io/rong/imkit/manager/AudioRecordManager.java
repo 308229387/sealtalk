@@ -68,8 +68,12 @@ public class AudioRecordManager implements Handler.Callback {
 
     private PopupWindow mRecordWindow;
     private ImageView mStateIV;
+    private ImageView recordBottomImage;
+    private ImageView recordCancelImage;
     private TextView mStateTV;
     private TextView mTimerTV;
+    private TextView recordCancelText;
+    private TextView recordSendText;
 
     private static final int RC_SAMPLE_RATE_8000 = 8000;
     private static final int RC_SAMPLE_RATE_16000 = 16000;
@@ -351,7 +355,12 @@ public class AudioRecordManager implements Handler.Callback {
         View view = inflater.inflate(R.layout.rc_voice_record_popup, null);
 
         mStateIV = (ImageView) view.findViewById(R.id.rc_audio_state_image);
+        recordBottomImage = (ImageView) view.findViewById(R.id.record_bottom_image);
+        recordCancelImage = (ImageView) view.findViewById(R.id.record_cancel_image);
         mStateTV = (TextView) view.findViewById(R.id.rc_audio_state_text);
+        mTimerTV = (TextView) view.findViewById(R.id.rc_audio_timer);
+        recordCancelText = (TextView) view.findViewById(R.id.record_cancel_text);
+        recordSendText = (TextView) view.findViewById(R.id.record_send_text);
         mTimerTV = (TextView) view.findViewById(R.id.rc_audio_timer);
 
         mRecordWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -392,6 +401,10 @@ public class AudioRecordManager implements Handler.Callback {
             mStateTV.setVisibility(View.VISIBLE);
             mStateTV.setText(R.string.rc_voice_rec);
             mStateTV.setBackgroundResource(android.R.color.transparent);
+            recordBottomImage.setBackgroundResource(R.drawable.record_bottom_white);
+            recordCancelImage.setBackgroundResource(R.drawable.delete_no_activation);
+            recordCancelText.setVisibility(View.GONE);
+            recordSendText.setVisibility(View.VISIBLE);
             mTimerTV.setVisibility(View.GONE);
         }
     }
@@ -406,6 +419,10 @@ public class AudioRecordManager implements Handler.Callback {
             mStateTV.setVisibility(View.VISIBLE);
             mStateTV.setText(R.string.rc_voice_cancel);
             mStateTV.setBackgroundResource(R.drawable.rc_voice_cancel_background);
+            recordBottomImage.setBackgroundResource(R.drawable.record_bottom_black);
+            recordCancelImage.setBackgroundResource(R.drawable.delete_activation);
+            recordCancelText.setVisibility(View.VISIBLE);
+            recordSendText.setVisibility(View.GONE);
         }
     }
 

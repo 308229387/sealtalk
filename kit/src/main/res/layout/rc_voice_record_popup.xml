@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:background="#90000000"
+    android:background="#99000000"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -57,10 +57,47 @@
             android:textSize="13dp" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="170dp">
+
+        <ImageView
+            android:id="@+id/record_cancel_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/delete_no_activation" />
+
+        <TextView
+            android:id="@+id/record_cancel_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="14sp"
+            android:textColor="#C3C3C3"
+            android:text="松开 取消"/>
+    </RelativeLayout>
+
+
     <ImageView
         android:id="@+id/record_bottom_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/record_bottom_white" />
+
+    <TextView
+        android:id="@+id/record_send_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="14sp"
+        android:layout_marginBottom="14dp"
+        android:layout_above="@id/record_bottom_image"
+        android:textColor="#C3C3C3"
+        android:text="松开 发送"/>
+
 </RelativeLayout>
