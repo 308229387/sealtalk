@@ -275,6 +275,7 @@ public class InputPanel {
             }
 
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                //正在播放声音要停掉
                 if (AudioPlayManager.getInstance().isPlaying()) {
                     AudioPlayManager.getInstance().stopPlay();
                 }
@@ -285,6 +286,7 @@ public class InputPanel {
                             Toast.LENGTH_SHORT).show();
                     return true;
                 }
+                //开始录音
                 AudioRecordManager.getInstance().startRecord(v.getRootView(), mConversationType, mTargetId);
                 mLastTouchY = event.getY();
                 mUpDirection = false;
