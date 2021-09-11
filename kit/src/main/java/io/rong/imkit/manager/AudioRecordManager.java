@@ -74,6 +74,8 @@ public class AudioRecordManager implements Handler.Callback {
 
     private PopupWindow mRecordWindow;
     private RelativeLayout voiceBackLayout;
+    private ImageView infoLayout;
+    private RelativeLayout recordLayout;
     private ImageView mStateIV;
     private ImageView recordBottomImage;
     private ImageView recordCancelImage;
@@ -159,6 +161,8 @@ public class AudioRecordManager implements Handler.Callback {
                         activityFinished = (boolean) msg.obj;
                     }
                     if (checked && !activityFinished) {
+                        infoLayout.setVisibility(View.VISIBLE);
+                        recordLayout.setVisibility(View.GONE);
                         mStateIV.setImageResource(R.drawable.rc_voice_volume_warning);
                         mStateTV.setText(R.string.rc_voice_short);
                         mHandler.removeMessages(AUDIO_RECORD_EVENT_SAMPLING);
@@ -366,6 +370,8 @@ public class AudioRecordManager implements Handler.Callback {
         recordBottomImage = (ImageView) view.findViewById(R.id.record_bottom_image);
         recordCancelImage = (ImageView) view.findViewById(R.id.record_cancel_image);
         voiceBackLayout = (RelativeLayout) view.findViewById(R.id.voice_back_layout);
+        infoLayout = (ImageView) view.findViewById(R.id.info_layout);
+        recordLayout = (RelativeLayout) view.findViewById(R.id.record_layout);
 
         mStateTV = (TextView) view.findViewById(R.id.rc_audio_state_text);
         mTimerTV = (TextView) view.findViewById(R.id.rc_audio_timer);
@@ -413,6 +419,7 @@ public class AudioRecordManager implements Handler.Callback {
         RLog.d(TAG, "setRecordingView");
 
         if (mRecordWindow != null) {
+            recordLayout.setVisibility(View.VISIBLE);
             mStateIV.setVisibility(View.VISIBLE);
             mStateIV.setImageResource(R.drawable.rc_voice_volume_1);
             mStateTV.setVisibility(View.VISIBLE);
@@ -432,6 +439,7 @@ public class AudioRecordManager implements Handler.Callback {
         RLog.d(TAG, "setCancelView");
 
         if (mRecordWindow != null) {
+            recordLayout.setVisibility(View.VISIBLE);
             mTimerTV.setVisibility(View.GONE);
             mStateIV.setVisibility(View.VISIBLE);
             mStateIV.setImageResource(R.drawable.rc_voice_volume_cancel);
