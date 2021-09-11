@@ -83,6 +83,7 @@ public class AudioRecordManager implements Handler.Callback {
     private TextView mTimerTV;
     private TextView recordCancelText;
     private TextView recordSendText;
+    private TextView speakTimeOut;
     private int originalWidth = 0;
 
     private static final int RC_SAMPLE_RATE_8000 = 8000;
@@ -377,6 +378,7 @@ public class AudioRecordManager implements Handler.Callback {
         mTimerTV = (TextView) view.findViewById(R.id.rc_audio_timer);
         recordCancelText = (TextView) view.findViewById(R.id.record_cancel_text);
         recordSendText = (TextView) view.findViewById(R.id.record_send_text);
+        speakTimeOut = (TextView) view.findViewById(R.id.speak_time_out);
 
         mRecordWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mRecordWindow.showAtLocation(root, Gravity.CENTER, 0, 0);
@@ -396,11 +398,13 @@ public class AudioRecordManager implements Handler.Callback {
     private void setTimeoutView(int counter) {
         if (counter > 0) {
             if (mRecordWindow != null) {
+                speakTimeOut.setVisibility(View.VISIBLE);
                 mStateIV.setVisibility(View.GONE);
                 mStateTV.setVisibility(View.VISIBLE);
                 mStateTV.setText(R.string.rc_voice_rec);
                 mStateTV.setBackgroundResource(android.R.color.transparent);
-                mTimerTV.setText(String.format("%s", counter));
+//                mTimerTV.setText(String.format("%s", counter));
+                speakTimeOut.setText(counter+"秒后停止录音");
                 mTimerTV.setVisibility(View.VISIBLE);
             }
         } else {
@@ -432,6 +436,8 @@ public class AudioRecordManager implements Handler.Callback {
             mTimerTV.setVisibility(View.GONE);
             voiceBackLayout.setBackgroundColor(Color.parseColor("#C2CBEE"));
             startZoomAnim(voiceBackLayout, originalWidth);
+            speakTimeOut.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -452,7 +458,7 @@ public class AudioRecordManager implements Handler.Callback {
             recordSendText.setVisibility(View.GONE);
             voiceBackLayout.setBackgroundColor(Color.parseColor("#BB33F6"));
             startZoomAnim(voiceBackLayout, 240);
-
+            speakTimeOut.setVisibility(View.GONE);
         }
     }
 
