@@ -56,6 +56,18 @@
             android:textSize="13dp" />
     </RelativeLayout>
 
+
+    <RelativeLayout
+        android:id="@+id/voice_back_layout"
+        android:layout_width="200dp"
+        android:background="#C2CBEE"
+        android:layout_height="76dp"
+        android:layout_centerInParent="true">
+
+
+    </RelativeLayout>
+
+
     <RelativeLayout
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -75,6 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
             android:textSize="14sp"
             android:textColor="#C3C3C3"
             android:text="松开 取消"/>

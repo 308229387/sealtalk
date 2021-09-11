@@ -1,7 +1,9 @@
 package io.rong.imkit.manager;
 
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -11,13 +13,18 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import java.io.File;
 
@@ -27,7 +34,6 @@ import io.rong.imkit.R;
 import io.rong.imkit.config.RongConfigCenter;
 import io.rong.imkit.feature.destruct.DestructManager;
 import io.rong.imlib.IRongCallback;
-import io.rong.imlib.RongCoreClient;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.common.SavePathUtils;
 import io.rong.imlib.model.Conversation;
@@ -67,6 +73,7 @@ public class AudioRecordManager implements Handler.Callback {
     private AudioManager.OnAudioFocusChangeListener mAfChangeListener;
 
     private PopupWindow mRecordWindow;
+    private RelativeLayout voiceBackLayout;
     private ImageView mStateIV;
     private ImageView recordBottomImage;
     private ImageView recordCancelImage;
@@ -74,6 +81,7 @@ public class AudioRecordManager implements Handler.Callback {
     private TextView mTimerTV;
     private TextView recordCancelText;
     private TextView recordSendText;
+    private int originalWidth = 0;
 
     private static final int RC_SAMPLE_RATE_8000 = 8000;
     private static final int RC_SAMPLE_RATE_16000 = 16000;
@@ -357,17 +365,26 @@ public class AudioRecordManager implements Handler.Callback {
         mStateIV = (ImageView) view.findViewById(R.id.rc_audio_state_image);
         recordBottomImage = (ImageView) view.findViewById(R.id.record_bottom_image);
         recordCancelImage = (ImageView) view.findViewById(R.id.record_cancel_image);
+        voiceBackLayout = (RelativeLayout) view.findViewById(R.id.voice_back_layout);
+
         mStateTV = (TextView) view.findViewById(R.id.rc_audio_state_text);
         mTimerTV = (TextView) view.findViewById(R.id.rc_audio_timer);
         recordCancelText = (TextView) view.findViewById(R.id.record_cancel_text);
         recordSendText = (TextView) view.findViewById(R.id.record_send_text);
-        mTimerTV = (TextView) view.findViewById(R.id.rc_audio_timer);
 
         mRecordWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mRecordWindow.showAtLocation(root, Gravity.CENTER, 0, 0);
         mRecordWindow.setFocusable(true);
         mRecordWindow.setOutsideTouchable(false);
         mRecordWindow.setTouchable(false);
+
+        originalWidth = getViewWidth(voiceBackLayout);
+        Log.d("song_test", "originalWidth = " + originalWidth);
+    }
+
+    public int getViewWidth(RelativeLayout view) {
+        view.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        return view.getMeasuredWidth();
     }
 
     private void setTimeoutView(int counter) {
@@ -406,6 +423,8 @@ public class AudioRecordManager implements Handler.Callback {
             recordCancelText.setVisibility(View.GONE);
             recordSendText.setVisibility(View.VISIBLE);
             mTimerTV.setVisibility(View.GONE);
+            voiceBackLayout.setBackgroundColor(Color.parseColor("#C2CBEE"));
+            startZoomAnim(voiceBackLayout, originalWidth);
         }
     }
 
@@ -423,6 +442,9 @@ public class AudioRecordManager implements Handler.Callback {
             recordCancelImage.setBackgroundResource(R.drawable.delete_activation);
             recordCancelText.setVisibility(View.VISIBLE);
             recordSendText.setVisibility(View.GONE);
+            voiceBackLayout.setBackgroundColor(Color.parseColor("#BB33F6"));
+            startZoomAnim(voiceBackLayout, 240);
+
         }
     }
 
@@ -803,5 +825,37 @@ public class AudioRecordManager implements Handler.Callback {
         public int getValue() {
             return this.value;
         }
+    }
+
+    public static void startValAnim(int from, int to, ValueAnimator.AnimatorUpdateListener listener,
+                                    long duration) {
+        ValueAnimator animator = ValueAnimator.ofInt(from, to);
+        //设置动画时长
+        animator.setDuration(duration);
+        //设置插值器，当然你可以不用
+        animator.setInterpolator(new DecelerateInterpolator());
+        //回调监听
+        animator.addUpdateListener(listener);
+        //启动动画
+        animator.start();
+    }
+
+
+    public static <V extends View> void startZoomAnim(@NonNull final V v, int to) {
+        Log.d("song_test", "to = " + to);
+
+        startValAnim(v.getWidth(), to, new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                /* 主要还是通过获取布局参数设置宽高 */
+                ViewGroup.LayoutParams lp = v.getLayoutParams();
+                //获取改变时的值
+                int size = Integer.valueOf(animation.getAnimatedValue().toString());
+                /* 因为我的需求是一个正方形，如果不规则可以等比例设置，这里我就不写了 */
+                lp.width = size;
+//                lp.height = size;
+                v.setLayoutParams(lp);
+            }
+        }, 200);
     }
 }
